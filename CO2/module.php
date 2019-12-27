@@ -17,8 +17,8 @@ class CO2 extends IPSModule {
 		}
 
 		public function Update() {
-				print_r($_SELF);
-				
+				print_r($_IPS);
+
 				echo $this->ReadPropertyString("Postleitzahl");
 				echo $this->ReadPropertyString("meterId");
 
