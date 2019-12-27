@@ -22,7 +22,7 @@
 				echo "Update";
 				echo $this->ReadPropertyString("Postleitzahl");
 				echo $this->ReadPropertyString("meterId");
-				echo $this->ReadPropertyString("IPSMeter");
+				echo $this->ReadPropertyInteger("IPSMeter");
 
 		}
 
