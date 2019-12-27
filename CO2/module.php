@@ -15,9 +15,11 @@ class CO2EmissionStrom extends IPSModule {
 			$this->RegisterPropertyString("secret", $secret);
 			$this->RegisterVariableInteger("co2g_standard", "CO2 (Standard)");
 			$this->RegisterVariableInteger("co2g_oekostrom", "CO2 (Ökostrom)");
-			IPS_CreateVariableProfile ("co2gramm", 1);
-			IPS_SetVariableProfileText("co2gramm","","g");
-			IPS_SetVariableProfileIcon("co2gramm",  "Flame");
+			if(!IPS_GetVariableProfile("co2gramm")) {
+				IPS_CreateVariableProfile ("co2gramm", 1);
+				IPS_SetVariableProfileText("co2gramm","","g");
+				IPS_SetVariableProfileIcon("co2gramm",  "Flame");
+			}
 		}
 
 		public function setReading($reading) {
