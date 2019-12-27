@@ -13,9 +13,19 @@
 			$this->RegisterPropertyString("Postleitzahl", "69256");
 			$this->RegisterPropertyString("meterId", $meterid);
 			$this->RegisterPropertyString("secret", $secret);
+			$this->RegisterPropertyInteger("IPSMeter", 0);
+
 
 
 		}
+		public function Update() {
+				echo "Update";
+				echo $this->ReadPropertyString("Postleitzahl");
+				echo $this->ReadPropertyString("meterId");
+				echo $this->ReadPropertyString("IPSMeter");
+
+		}
+
 
 		public function Destroy()
 		{
