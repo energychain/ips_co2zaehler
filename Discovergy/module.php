@@ -1,5 +1,5 @@
 <?php
-class CO2EmissionStrom extends IPSModule {
+class CO2EmissionDiscovergyMeter extends IPSModule {
 
 		public function Create()
 		{
