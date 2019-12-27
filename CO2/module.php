@@ -37,11 +37,13 @@ class CO2EmissionStrom extends IPSModule {
 		{
 			//Never delete this line!
 			parent::ApplyChanges();
+				/*
 			$eid = IPS_CreateEvent(0);
 			IPS_SetEventTrigger($eid, 1, $this->ReadPropertyInteger("IPSMeter"));
 			IPS_SetParent($eid, $_IPS['SELF']);
 			IPS_SetEventActive($eid, true);
 			IPS_SetEventScript($eid, "SDAO_Update(1234);");
+			*/
 		}
 
 	}
