@@ -16,9 +16,9 @@ class CO2 extends IPSModule {
 			$this->RegisterPropertyInteger("IPSMeter", 0);
 		}
 
-		public function Update() {
+		public function calculate() {
 				print_r($_IPS);
-
+				echo $this->InstanceID;
 				echo $this->ReadPropertyString("Postleitzahl");
 				echo $this->ReadPropertyString("meterId");
 
