@@ -13,15 +13,17 @@ class CO2 extends IPSModule {
 			$this->RegisterPropertyString("Postleitzahl", "69256");
 			$this->RegisterPropertyString("meterId", $meterid);
 			$this->RegisterPropertyString("secret", $secret);
-			$this->RegisterPropertyInteger("IPSMeter", 0);
+			$this->RegisterVariableInteger("co2g_standard", "CO2 (Standard)");
+			$this->RegisterVariableInteger("co2g_oekostrom", "CO2 (Ökostrom)");
 		}
 
-		public function calculate() {
-				print_r($_IPS);
-				echo $this->InstanceID;
-				echo $this->ReadPropertyString("Postleitzahl");
-				echo $this->ReadPropertyString("meterId");
-
+		public function setReading($reading) {
+			$ch = curl_init("https://api.corrently.io/core/reading");
+	    curl_setopt($ch,CURLOPT_POST,true);
+	    curl_setopt($ch,CURLOPT_POSTFIELDS,"&externalAccount=ips_".$this->ReadPropertyString("meterId")."_".$this->ReadPropertyString("Postleitzahl")."&secret=".$this->ReadPropertyString("secret")."&energy=".$reading."&zip=".$this->ReadPropertyString("Postleitzahl"));
+	    curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+	    $result = json_decode(curl_exec($ch));
+	    print_r($result);
 		}
 
 
