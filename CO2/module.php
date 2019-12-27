@@ -8,13 +8,19 @@
 
 
 			// Register some required parameters for our Corrently CO2 Reading operation
- 			$this->RegisterVariableString("Postleitzahl", "69256");
+			$this->RegisterVariableString("Postleitzahl", "Postleitzahl");
+			$this->RegisterVariableString("meterId", "meterId");
+			$this->RegisterVariableString("secret", "secret");
+
+
+
+ 			$this->SetValue($this->GetIDForIdent("Postleitzahl"), "69256");
 
 			$randstr = bin2hex(random_bytes(5));
-			$this->RegisterVariableString("meterId", md5(time())."_".$randstr);
+			$this->SetValue($this->GetIDForIdent("meterId"), md5(time())."_".$randstr);
 
 			$secret = bin2hex(random_bytes(10));
-			$this->RegisterVariableString("secret",$secret);
+			$this->SetValue($this->GetIDForIdent("secret"), $secret);
 
 		}
 
