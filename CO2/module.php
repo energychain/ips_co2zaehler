@@ -10,14 +10,10 @@
 			$secret = bin2hex(random_bytes(40));
 
 			// Register some required parameters for our Corrently CO2 Reading operation
-			$i_plz= $this->RegisterVariableString("Postleitzahl", "Postleitzahl");
-			$i_meterid= $this->RegisterVariableString("meterId", "meterId");
-			$i_secret = $this->RegisterVariableString("secret", "secret");
+			$this->RegisterPropertyString("Postleitzahl", "69256");
+			$this->RegisterPropertyString("meterId", $meterid);
+			$this->RegisterPropertyString("secret", $secret);
 
-
- 			$this->SetValue($i_plz, "69256");
-			$this->SetValue($i_meterid, $meterid);
-			$this->SetValue($i_secret, $secret);
 
 		}
 

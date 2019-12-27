@@ -1,5 +1,8 @@
 {
-    "elements": [],
-    "actions": [],
+    "elements": [
+        { "type": "ValidationTextBox", "name": "Postleitzahl", "caption": "Postleitzahl (in Deutschland)" },
+    ],
+    "actions": [        
+    ],
     "status": []
 }
