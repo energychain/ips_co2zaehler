@@ -1,5 +1,5 @@
 <?php
-	class CO2 extends IPSModule {
+class CO2 extends IPSModule {
 
 		public function Create()
 		{
@@ -14,16 +14,13 @@
 			$this->RegisterPropertyString("meterId", $meterid);
 			$this->RegisterPropertyString("secret", $secret);
 			$this->RegisterPropertyInteger("IPSMeter", 0);
-
-
-
 		}
-		public function Update() {
-				echo "Update";
+
+		public function Update($oid) {
+				echo "Update:".$oid;
 				echo $this->ReadPropertyString("Postleitzahl");
 				echo $this->ReadPropertyString("meterId");
-				echo $this->ReadPropertyInteger("IPSMeter");
-
+				echo "READING:".GetValue($oid);
 		}
 
 
@@ -37,6 +34,11 @@
 		{
 			//Never delete this line!
 			parent::ApplyChanges();
+			$eid = IPS_CreateEvent(0);
+			IPS_SetEventTrigger($eid, 1, $this->ReadPropertyInteger("IPSMeter"));
+			IPS_SetParent($eid, $_IPS['SELF']);
+			IPS_SetEventActive($eid, true);
+			IPS_SetEventScript($eid, "SDAO_Update(1234);");
 		}
 
 	}
