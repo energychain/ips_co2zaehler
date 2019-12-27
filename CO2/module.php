@@ -15,9 +15,9 @@
 			$this->RegisterVariableString("secret", "secret");
 
 
- 			$this->SetValueString("Postleitzahl", "69256");
-			$this->SetValueString("meterid", $meterid);
-			$this->SetValueString("secret", secret);
+ 			$this->SetValue($this->GetIDForIdent("Postleitzahl"), "69256");
+			$this->SetValue($this->GetIDForIdent("meterid"), $meterid);
+			$this->SetValue($this->GetIDForIdent("secret"), secret);
 
 		}
 
