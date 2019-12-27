@@ -1,2 +1,6 @@
-# ips_co2zaehler
-CO2 Zähler für IP Symcon
+# Corrently
+
+Folgende Module beinhaltet das Corrently Repository:
+
+- __CO2__ ([Dokumentation](CO2))
+	Kurze Beschreibung des Moduls.
