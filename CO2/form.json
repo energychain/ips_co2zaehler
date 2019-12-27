@@ -1,6 +1,6 @@
 {
     "elements": [
-        { "type": "ValidationTextBox", "name": "Postleitzahl", "caption": "Postleitzahl (in Deutschland)" },        
+        { "type": "ValidationTextBox", "name": "Postleitzahl", "caption": "Postleitzahl (in Deutschland)" }        
     ],
     "actions": [
     ],
