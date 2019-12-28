@@ -28,6 +28,8 @@ class CO2EmissionStrom extends IPSModule {
 		}
 
 		public function setReading($reading_in_wh) {
+			print_r($this->ReadPropertyInteger("meteringvariable"));
+			
 			$reading_in_wh = round($reading_in_wh); //ensure that we receive an integer
 			$ch = curl_init("https://api.corrently.io/core/reading");
 	    curl_setopt($ch,CURLOPT_POST,true);
@@ -55,7 +57,7 @@ class CO2EmissionStrom extends IPSModule {
 		{
 			//Never delete this line!
 			parent::ApplyChanges();
-			print_r($this->ReadPropertyInteger("meteringvariable"));
+
 		}
 
 	}
