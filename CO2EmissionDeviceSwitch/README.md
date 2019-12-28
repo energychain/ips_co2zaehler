@@ -1,5 +1,5 @@
 # STROMDAO-Corrently CO2 Zähler
-Ermittelt die freigesetze Kohlendioxid Menge für einen Stromzähler und protokolliert diese zur anschließenden Kompensation.
+Ermittelt die freigesetze Kohlendioxid Menge für einen Switch und protokolliert diese zur anschließenden Kompensation.
 
 ### Inhaltsverzeichnis
 
@@ -12,8 +12,8 @@ Ermittelt die freigesetze Kohlendioxid Menge für einen Stromzähler und protoko
 7. [PHP-Befehlsreferenz](#7-php-befehlsreferenz)
 
 ### 1. Funktionsumfang
-- Verknüpfbar mit einer Integer Variable innerhalb von IP-Symcon
-- Interpretation der vertknüpften Variable als Stromzähler in Wattstunden
+- Verknüpfbar mit einer Boolean Variable innerhalb von IP-Symcon
+- Interpretation der vertknüpften Variable als Gerät und Ermittlung des Verbrauchs in Wattstunden
 - Trigger des Corrently Webservices zur Ermittlung des ortsspezifischen CO2-Fußabdrucks
 - Protokollierung der Ergebnisse unter einer eindeutigen Kompensations Kennung (Account)
 *
@@ -24,7 +24,7 @@ Ermittelt die freigesetze Kohlendioxid Menge für einen Stromzähler und protoko
 
 ### 3. Software-Installation
 
-* Über den Module Store das 'CO2 Emission Strom'-Modul installieren.
+* Über den Module Store das 'CO2 Emission Device Switch'-Modul installieren.
 * Alternativ über das Module Control folgende URL hinzufügen: https://github.com/energychain/ips_co2zaehler
 
 ### 4. Einrichten der Instanzen in IP-Symcon
@@ -36,7 +36,7 @@ __Konfigurationsseite__:
 Name     | Beschreibung
 -------- | ------------------
 Postleitzahl | Postleitzahl in Deutschland, auf die eine spezifische CO2 Emission räumlich und zeitlich verortet werden soll
-meteringvariable | Integer Variable, die einen Stromzähler in Wattstunden (wh) enthält.
+meteringvariable | Boolean Variable, die einen Switchzustand (an/aus) angibt.
 
 ### 5. Statusvariablen und Profile
 
