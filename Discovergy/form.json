@@ -1,9 +1,0 @@
-{
-    "elements": [
-        { "type": "ValidationTextBox", "name": "DISCOVERGY_ACCOUNT", "caption": "Discovergy Account (Email)" },
-        { "type": "ValidationTextBox", "name": "DISCOVERGY_PASSWORD", "caption": "Discovergy Passwort" }        
-    ],
-    "actions": [
-    ],
-    "status": []
-}

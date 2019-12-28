@@ -13,6 +13,8 @@ class CO2EmissionStrom extends IPSModule {
 			$this->RegisterPropertyString("Postleitzahl", "69256");
 			$this->RegisterPropertyString("meterId", $meterid);
 			$this->RegisterPropertyString("secret", $secret);
+			$this->RegisterPropertyInteger("meteringvariable", 0);
+
 			$this->RegisterVariableInteger("reading_in_wh", "Zählerstand (in Wh)");
 			$this->RegisterVariableInteger("co2g_standard", "CO2 (Standard)");
 			$this->RegisterVariableInteger("co2g_oekostrom", "CO2 (Ökostrom)");
