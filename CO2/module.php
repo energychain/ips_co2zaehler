@@ -18,7 +18,8 @@ class CO2EmissionStrom extends IPSModule {
 			$this->RegisterVariableInteger("reading_in_wh", "Zählerstand (in Wh)");
 			$this->RegisterVariableInteger("co2g_standard", "CO2 (Standard)");
 			$this->RegisterVariableInteger("co2g_oekostrom", "CO2 (Ökostrom)");
-			$this->RegisterVariableInteger("account", "Kompensations Account");
+			$this->RegisterVariableString("account", "Kompensations Account");
+
 			if(!IPS_GetVariableProfile("co2gramm")) {
 				IPS_CreateVariableProfile ("co2gramm", 1);
 				IPS_SetVariableProfileText("co2gramm","","g");
@@ -54,6 +55,7 @@ class CO2EmissionStrom extends IPSModule {
 		{
 			//Never delete this line!
 			parent::ApplyChanges();
+			print_r($this->ReadPropertyInteger("meteringvariable"));
 		}
 
 	}
