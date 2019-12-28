@@ -27,13 +27,11 @@ class CO2EmissionStrom extends IPSModule {
 			}
 		}
 
-		public function setReading($reading_in_wh) {
-			print_r($this->ReadPropertyInteger("meteringvariable"));
-			
-			$reading_in_wh = round($reading_in_wh); //ensure that we receive an integer
+		public function setReading() {
+			$reading_in_wh = GetValue($this->ReadPropertyInteger("meteringvariable"));
 			$ch = curl_init("https://api.corrently.io/core/reading");
 	    curl_setopt($ch,CURLOPT_POST,true);
-	    curl_setopt($ch,CURLOPT_POSTFIELDS,"&externalAccount=ips_".$this->ReadPropertyString("meterId")."_".$this->ReadPropertyString("Postleitzahl")."&secret=".$this->ReadPropertyString("secret")."&energy=".$reading_in_wh."&zip=".$this->ReadPropertyString("Postleitzahl"));
+	    curl_setopt($ch,CURLOPT_POSTFIELDS,"&externalAccount=ips_".$this->ReadPropertyString("meterId")."_".$this->ReadPropertyString("Postleitzahl")."_".$this->ReadPropertyInteger("meteringvariable")."&secret=".$this->ReadPropertyString("secret")."&energy=".$reading_in_wh."&zip=".$this->ReadPropertyString("Postleitzahl"));
 	    curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
 	    $result = json_decode(curl_exec($ch));
 			if(isset($result->co2_g_standard)) {
@@ -57,7 +55,14 @@ class CO2EmissionStrom extends IPSModule {
 		{
 			//Never delete this line!
 			parent::ApplyChanges();
-
+			if($this->ReadPropertyInteger("meteringvariable")!=0) {
+						$eid = IPS_CreateEvent(0);
+						IPS_SetEventTrigger($eid, 1, $this->ReadPropertyInteger("meteringvariable"));
+						IPS_SetParent($eid,  $this->ReadPropertyInteger("meteringvariable"));
+						IPS_SetEventActive($eid, true);
+						IPS_SetEventScript($eid, "CO2_setReading(".$this->InstanceID.");");
+						IPS_SetName($eid, "Trigger CO2 Update);
+			}
 		}
 
 	}
