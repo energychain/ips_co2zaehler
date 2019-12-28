@@ -1,0 +1,11 @@
+{
+    "elements": [
+        { "type": "ValidationTextBox", "name": "Postleitzahl", "caption": "Postleitzahl (in Deutschland)" },
+        { "type": "SelectVariable", "name": "meteringvariable", "caption": "Switch-Status Variable (Boolean)" },
+        { "type": "NumberSpinner", "name": "power_in_wh", "caption": "Leistung in Watt" }
+
+    ],
+    "actions": [
+    ],
+    "status": []
+}

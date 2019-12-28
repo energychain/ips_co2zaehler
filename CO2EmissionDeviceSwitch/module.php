@@ -1,5 +1,5 @@
 <?php
-class CO2EmissionStrom extends IPSModule {
+class CO2EmissionDeviceSwitch extends IPSModule {
 
 		public function Create()
 		{
@@ -14,6 +14,7 @@ class CO2EmissionStrom extends IPSModule {
 			$this->RegisterPropertyString("meterId", $meterid);
 			$this->RegisterPropertyString("secret", $secret);
 			$this->RegisterPropertyInteger("meteringvariable", 0);
+			$this->RegisterPropertyInteger("power_in_wh", 0);
 
 			$this->RegisterVariableInteger("reading_in_wh", "Zählerstand aktuell (in Wh)");
 			$this->RegisterVariableInteger("co2g_standard", "CO2 (Standard)");
@@ -28,11 +29,14 @@ class CO2EmissionStrom extends IPSModule {
 		}
 
 		public function setReading() {
-			$reading_in_wh = GetValue($this->ReadPropertyInteger("meteringvariable"));			
-
+			$reading_in_wh = GetValue($this->ReadPropertyBoolean("meteringvariable"));
+			$power=GetValue($this->GetIDForIdent("power_in_wh"));
+			if($reading_in_wh) {
+				$power=0;
+			}
 			$ch = curl_init("https://api.corrently.io/core/reading");
 	    curl_setopt($ch,CURLOPT_POST,true);
-	    curl_setopt($ch,CURLOPT_POSTFIELDS,"&externalAccount=ips_".$this->ReadPropertyString("meterId")."_".$this->ReadPropertyString("Postleitzahl")."_".$this->ReadPropertyInteger("meteringvariable")."&secret=".$this->ReadPropertyString("secret")."&energy=".$reading_in_wh."&zip=".$this->ReadPropertyString("Postleitzahl"));
+	    curl_setopt($ch,CURLOPT_POSTFIELDS,"&externalAccount=ips_".$this->ReadPropertyString("meterId")."_".$this->ReadPropertyString("Postleitzahl")."_".$this->ReadPropertyInteger("meteringvariable")."&secret=".$this->ReadPropertyString("secret")."&power=".$power."&zip=".$this->ReadPropertyString("Postleitzahl"));
 	    curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
 	    $result = json_decode(curl_exec($ch));
 			if(isset($result->co2_g_standard)) {
@@ -61,7 +65,7 @@ class CO2EmissionStrom extends IPSModule {
 						IPS_SetEventTrigger($eid, 1, $this->ReadPropertyInteger("meteringvariable"));
 						IPS_SetParent($eid,  $this->ReadPropertyInteger("meteringvariable"));
 						IPS_SetEventActive($eid, true);
-						IPS_SetEventScript($eid, "CO2_setReading(".$this->InstanceID.");");
+						IPS_SetEventScript($eid, "CO2Device_setReading(".$this->InstanceID.");");
 						IPS_SetName($eid, "Trigger CO2 Update");
 			}
 		}
