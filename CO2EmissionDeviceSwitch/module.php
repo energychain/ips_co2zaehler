@@ -29,7 +29,7 @@ class CO2EmissionDeviceSwitch extends IPSModule {
 		}
 
 		public function setReading() {
-			$reading_in_wh = GetValue($this->ReadPropertyBoolean("meteringvariable"));
+			$reading_in_wh = GetValue($this->ReadPropertyInteger("meteringvariable"));
 			$power=GetValue($this->GetIDForIdent("power_in_wh"));
 			if($reading_in_wh) {
 				$power=0;
