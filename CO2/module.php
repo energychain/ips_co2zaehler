@@ -61,7 +61,7 @@ class CO2EmissionStrom extends IPSModule {
 						IPS_SetParent($eid,  $this->ReadPropertyInteger("meteringvariable"));
 						IPS_SetEventActive($eid, true);
 						IPS_SetEventScript($eid, "CO2_setReading(".$this->InstanceID.");");
-						IPS_SetName($eid, "Trigger CO2 Update);
+						IPS_SetName($eid, "Trigger CO2 Update");
 			}
 		}
 
