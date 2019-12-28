@@ -1,5 +1,5 @@
-# CO2
-Beschreibung des Moduls.
+# STROMDAO-Corrently CO2 Zähler
+Ermittelt die freigesetze Kohlendioxid Menge für einen Stromzähler und protokolliert diese zur anschließenden Kompensation.
 
 ### Inhaltsverzeichnis
 
@@ -12,7 +12,10 @@ Beschreibung des Moduls.
 7. [PHP-Befehlsreferenz](#7-php-befehlsreferenz)
 
 ### 1. Funktionsumfang
-
+- Verknüpfbar mit einer Integer Variable innerhalb von IP-Symcon
+- Interpretation der vertknüpften Variable als Stromzähler in Wattstunden
+- Trigger des Corrently Webservices zur Ermittlung des ortsspezifischen CO2-Fußabdrucks
+- Protokollierung der Ergebnisse unter einer eindeutigen Kompensations Kennung (Account)
 *
 
 ### 2. Vorraussetzungen
@@ -21,19 +24,19 @@ Beschreibung des Moduls.
 
 ### 3. Software-Installation
 
-* Über den Module Store das 'CO2'-Modul installieren.
-* Alternativ über das Module Control folgende URL hinzufügen
+* Über den Module Store das 'CO2 Emission Strom'-Modul installieren.
+* Alternativ über das Module Control folgende URL hinzufügen: https://github.com/energychain/ips_co2zaehler
 
 ### 4. Einrichten der Instanzen in IP-Symcon
 
- Unter 'Instanz hinzufügen' ist das 'CO2'-Modul unter dem Hersteller 'STROMDAO GmbH' aufgeführt.
+ Unter 'Instanz hinzufügen' ist das 'CO2 Emission Strom'-Modul unter dem Hersteller 'STROMDAO GmbH' aufgeführt.
 
 __Konfigurationsseite__:
 
 Name     | Beschreibung
 -------- | ------------------
-         |
-         |
+Postleitzahl | Postleitzahl in Deutschland, auf die eine spezifische CO2 Emission räumlich und zeitlich verortet werden soll
+meteringvariable | Integer Variable, die einen Stromzähler in Wattstunden (wh) enthält.
 
 ### 5. Statusvariablen und Profile
 
@@ -43,24 +46,24 @@ Die Statusvariablen/Kategorien werden automatisch angelegt. Das Löschen einzeln
 
 Name   | Typ     | Beschreibung
 ------ | ------- | ------------
-       |         |
-       |         |
+co2g_standard   | integer | Emitierte CO2 Menge im Betrachtungszeitraum in Gramm für einen konventionellen Stromtarif
+co2g_oekostrom   | integer | Emitierte CO2 Menge im Betrachtungszeitraum in Gramm für einen Ökostromtarif (zertifiziert)
+account | string | Stromdao/Corrently Kennung zur Kompensation dieses Zählers
 
 #### Profile
 
 Name   | Typ
 ------ | -------
-       |
-       |
+co2gramm | Integer
 
 ### 6. WebFront
 
-Die Funktionalität, die das Modul im WebFront bietet.
+N/A
 
 ### 7. PHP-Befehlsreferenze
 
-`boolean SDAO_BeispielFunktion(integer $InstanzID);`
-Erklärung der Funktion.
+`void CO2_setReading(integer $InstanzID);`
+Aktualisiert die Kohlendioxid Menge, wird automatisch durch einen Trigger aufgerufen.
 
 Beispiel:
-`SDAO_BeispielFunktion(12345);`
+`CO2_setReading(12345);`

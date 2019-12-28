@@ -15,7 +15,9 @@ class CO2EmissionStrom extends IPSModule {
 			$this->RegisterPropertyString("secret", $secret);
 			$this->RegisterPropertyInteger("meteringvariable", 0);
 
-			$this->RegisterVariableInteger("reading_in_wh", "Zählerstand (in Wh)");
+			$this->RegisterVariableInteger("reading_in_wh", "Zählerstand aktuell (in Wh)");
+			$this->RegisterVariableInteger("history_in_wh", "Zählerstand beginn (in Wh)");
+			$this->RegisterVariableInteger("delta_in_wh", "Verbrauch (in Wh)");
 			$this->RegisterVariableInteger("co2g_standard", "CO2 (Standard)");
 			$this->RegisterVariableInteger("co2g_oekostrom", "CO2 (Ökostrom)");
 			$this->RegisterVariableString("account", "Kompensations Account");
@@ -29,6 +31,11 @@ class CO2EmissionStrom extends IPSModule {
 
 		public function setReading() {
 			$reading_in_wh = GetValue($this->ReadPropertyInteger("meteringvariable"));
+			if(GetValue($this->ReadPropertyInteger("history_in_wh"))==0) {
+				SetValue($this->ReadPropertyInteger("history_in_wh"),$reading_in_wh);
+			}
+			SetValue($this->ReadPropertyInteger("delta_in_wh"),$reading_in_wh-$this->ReadPropertyInteger("history_in_wh"));
+			
 			$ch = curl_init("https://api.corrently.io/core/reading");
 	    curl_setopt($ch,CURLOPT_POST,true);
 	    curl_setopt($ch,CURLOPT_POSTFIELDS,"&externalAccount=ips_".$this->ReadPropertyString("meterId")."_".$this->ReadPropertyString("Postleitzahl")."_".$this->ReadPropertyInteger("meteringvariable")."&secret=".$this->ReadPropertyString("secret")."&energy=".$reading_in_wh."&zip=".$this->ReadPropertyString("Postleitzahl"));
