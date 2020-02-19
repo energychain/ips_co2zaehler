@@ -5,12 +5,15 @@ class CorrentlyAppConnector extends IPSModule {
 		{
 			//Never delete this line!
 			parent::Create();
-
+			$this->RegisterPropertyString("Postleitzahl", "69256");
+			$this->RegisterPropertyString("ac", "");
+			$this->RegisterPropertyString("wc", "");
+			$this->RegisterPropertyInteger("meteringvariable", 0);
 			/*
 			$this->RegisterPropertyString("Postleitzahl", "69256");
 			$this->RegisterPropertyString("meterId", $meterid);
 			$this->RegisterPropertyString("secret", $secret);
-			$this->RegisterPropertyInteger("meteringvariable", 0);
+		x
 
 			$this->RegisterVariableInteger("reading_in_wh", "Zählerstand aktuell (in Wh)");
 			$this->RegisterVariableInteger("co2g_standard", "CO2 (Standard)");
@@ -142,6 +145,14 @@ class CorrentlyAppConnector extends IPSModule {
 		{
 			//Never delete this line!
 			parent::ApplyChanges();
+			if($this->ReadPropertyInteger("meteringvariable")!=0) {
+						$eid = IPS_CreateEvent(0);
+						IPS_SetEventTrigger($eid, 1, $this->ReadPropertyInteger("meteringvariable"));
+						IPS_SetParent($eid,  $this->ReadPropertyInteger("meteringvariable"));
+						IPS_SetEventActive($eid, true);
+						IPS_SetEventScript($eid, "corrently_update(".$this->InstanceID.");");
+						IPS_SetName($eid, "Trigger Corrently App Event Update");
+			}
 		}
 
 	}
