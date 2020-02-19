@@ -1,0 +1,12 @@
+{
+    "id": "{2053C2A4-C5B6-0554-80E0-F82ADEFB3CB6}",
+    "name": "Corrently App Connector",
+    "type": 3,
+    "vendor": "STROMDAO GmbH",
+    "aliases": [],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "CO2",
+    "url": "https://corrently.io/libraries/resp-api"
+}

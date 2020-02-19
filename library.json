@@ -1,8 +1,8 @@
 {
-    "id": "{FE038FF1-66A2-EE4B-E37D-197CEA2895E1}",
+    "id": "{63003D6C-91E4-1958-74D5-ADF6D180F6CE}",
     "author": "STROMDAO GmbH",
-    "name": "Corrently",
-    "url": "https://www.corrently.de/",
+    "name": "Corrently App",
+    "url": "https://app.corrently.de/",
     "compatibility": {
         "version": "5.0"
     },
