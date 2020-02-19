@@ -1,5 +1,5 @@
 <?php
-class AppConnector extends IPSModule {
+class CorrentlyAppConnector extends IPSModule {
 
 		public function Create()
 		{
