@@ -1,6 +1,8 @@
 {
     "elements": [
         { "type": "SelectVariable", "name": "meteringvariable", "caption": "Switch-Status Variable (Boolean)" },
+        { "type": "NumberSpinner", "name": "Nennleistung", "caption": "Nennleistung in Watt" },
+        { "type": "NumberSpinner", "minimum": 0, "maximum":3600, "name": "Zyklusverbrauch", "caption": "oder Zyklusverbrauch in Wattstunden" },
         { "type": "ValidationTextBox", "name": "Postleitzahl", "caption": "Postleitzahl (in Deutschland)" },
         { "type": "ValidationTextBox", "name": "ac", "caption": "AC Wert aus der APP" },
         { "type": "ValidationTextBox", "name": "wc", "caption": "WC Wert aus der APP" }

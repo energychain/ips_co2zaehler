@@ -8,6 +8,8 @@ class CorrentlyAppConnector extends IPSModule {
 			$this->RegisterPropertyString("Postleitzahl", "69256");
 			$this->RegisterPropertyString("ac", "");
 			$this->RegisterPropertyString("wc", "");
+			$this->RegisterPropertyInteger("Nennleistung",0);
+			$this->RegisterPropertyInteger("Zyklusverbrauch",0);
 			$this->RegisterPropertyInteger("meteringvariable", 0);
 
 			if(!IPS_GetVariableProfile("Watt-Stunden")) {
@@ -45,25 +47,35 @@ class CorrentlyAppConnector extends IPSModule {
 			             SetValue(@IPS_GetVariableIDByName('Betriebszeit',$parent),GetValue(@IPS_GetVariableIDByName('Betriebszeit',$parent)) + $event_dauer);
 			             SetValue(@IPS_GetVariableIDByName('Zyklusverbrauch',$parent), $event);
 			          } else {
-			            $i = IPS_CreateVariable(1);
-			            IPS_SetParent($i,$parent);
-			            IPS_SetName($i,"Startzeit");
-			            $i = IPS_CreateVariable(1);
-			            IPS_SetParent($i,$parent);
-			            IPS_SetName($i,"Betriebszeit");
-			            $i = IPS_CreateVariable(1);
-			            IPS_SetParent($i,$parent);
-			            IPS_SetName($i,"Nennleistung");
-			            IPS_SetVariableCustomProfile($i,"Watt");
-			            $i = IPS_CreateVariable(1);
-			            IPS_SetParent($i,$parent);
-			            IPS_SetName($i,"Zyklusverbrauch");
-			            IPS_SetVariableCustomProfile($i,"Watt-Stunden");
-			            $i = IPS_CreateVariable(1);
-			            IPS_SetParent($i,$parent);
-			            IPS_SetName($i,"Gesamtverbrauch");
-			            IPS_SetVariableCustomProfile($i,"Watt-Stunden");
-			            }
+									if(!@IPS_GetVariableIDByName('Startzeit',$parent)) {
+				            $i = IPS_CreateVariable(1);
+				            IPS_SetParent($i,$parent);
+				            IPS_SetName($i,"Startzeit");
+									}
+									if(!@IPS_GetVariableIDByName('Betriebszeit',$parent)) {
+				            $i = IPS_CreateVariable(1);
+				            IPS_SetParent($i,$parent);
+				            IPS_SetName($i,"Betriebszeit");
+									}
+									if(!@IPS_GetVariableIDByName('Nennleistung',$parent)) {
+										$i = IPS_CreateVariable(1);
+										IPS_SetParent($i,$parent);
+										IPS_SetName($i,"Nennleistung");
+										IPS_SetVariableCustomProfile($i,"Watt");
+									}
+			            if(!@IPS_GetVariableIDByName('Zyklusverbrauch',$parent)) {
+				            $i = IPS_CreateVariable(1);
+				            IPS_SetParent($i,$parent);
+				            IPS_SetName($i,"Zyklusverbrauch");
+				            IPS_SetVariableCustomProfile($i,"Watt-Stunden");
+									}
+									if(!@IPS_GetVariableIDByName('Gesamtverbrauch',$parent)) {
+				            $i = IPS_CreateVariable(1);
+				            IPS_SetParent($i,$parent);
+				            IPS_SetName($i,"Gesamtverbrauch");
+				            IPS_SetVariableCustomProfile($i,"Watt-Stunden");
+									}
+			           }
 			          }
 			        } else {
 			            if($_IPS['VALUE']==1) {
@@ -121,6 +133,7 @@ class CorrentlyAppConnector extends IPSModule {
 			    $response = curl_exec($ch);
 
 			    $responseData = json_decode($response, TRUE);
+					print_r($responseData);
 			}
 		}
 
@@ -141,8 +154,30 @@ class CorrentlyAppConnector extends IPSModule {
 						IPS_SetParent($eid,  $this->ReadPropertyInteger("meteringvariable"));
 						IPS_SetEventActive($eid, true);
 						IPS_SetEventScript($eid, "corrently_update(".$this->InstanceID.");");
-						IPS_SetName($eid, "Trigger Corrently App Event Update");
+						IPS_SetName($eid, "Corrently App Ereignis");
+
+						$parent = IPS_GetParent($this->ReadPropertyInteger("meteringvariable"));
+
+						if(!@IPS_GetVariableIDByName('Zyklusverbrauch',$parent)) {
+							 $i = IPS_CreateVariable(1);
+							 IPS_SetParent($i,$parent);
+							 IPS_SetName($i,"Zyklusverbrauch");
+							 IPS_SetVariableCustomProfile($i,"Watt-Stunden");
+						}
+						if($this->ReadPropertyInteger("Zyklusverbrauch") > 0) {
+							SetValue(IPS_GetVariableIDByName('Zyklusverbrauch',$parent),$this->ReadPropertyInteger("Zyklusverbrauch"))
+						}
+
+						if(!@IPS_GetVariableIDByName('Nennleistung',$parent)) {
+							 $i = IPS_CreateVariable(1);
+							 IPS_SetParent($i,$parent);
+							 IPS_SetName($i,"Nennleistung");
+							 IPS_SetVariableCustomProfile($i,"Watt-Stunden");
+						}
+						if($this->ReadPropertyInteger("Nennleistung") > 0) {
+							SetValue(IPS_GetVariableIDByName('Nennleistung',$parent),$this->ReadPropertyInteger("Nennleistung"))
+						}
+
 			}
 		}
-
-	}
+}
