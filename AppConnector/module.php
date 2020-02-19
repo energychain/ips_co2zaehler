@@ -9,17 +9,6 @@ class CorrentlyAppConnector extends IPSModule {
 			$this->RegisterPropertyString("ac", "");
 			$this->RegisterPropertyString("wc", "");
 			$this->RegisterPropertyInteger("meteringvariable", 0);
-			/*
-			$this->RegisterPropertyString("Postleitzahl", "69256");
-			$this->RegisterPropertyString("meterId", $meterid);
-			$this->RegisterPropertyString("secret", $secret);
-		x
-
-			$this->RegisterVariableInteger("reading_in_wh", "Zählerstand aktuell (in Wh)");
-			$this->RegisterVariableInteger("co2g_standard", "CO2 (Standard)");
-			$this->RegisterVariableInteger("co2g_oekostrom", "CO2 (Ökostrom)");
-			$this->RegisterVariableString("account", "Kompensations Account");
-			*/
 
 			if(!IPS_GetVariableProfile("Watt-Stunden")) {
 			    IPS_CreateVariableProfile ("Watt-Stunden", 1);
