@@ -28,7 +28,7 @@ Ermöglicht eine Übernahme von Schaltvorgängen direkt in die Corrently App zur
 
 ### 4. Einrichten der Instanzen in IP-Symcon
 
- Unter 'Instanz hinzufügen' ist das 'CO2 Emission Strom'-Modul unter dem Hersteller 'STROMDAO GmbH' aufgeführt.
+ Unter 'Instanz hinzufügen' ist das 'Corrently App Connector'-Modul unter dem Hersteller 'STROMDAO GmbH' aufgeführt.
 
 __Konfigurationsseite__:
 

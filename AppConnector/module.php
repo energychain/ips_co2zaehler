@@ -6,10 +6,7 @@ class CorrentlyAppConnector extends IPSModule {
 			//Never delete this line!
 			parent::Create();
 
-			$meterid = bin2hex(random_bytes(40));
-			$secret = bin2hex(random_bytes(40));
-
-			// Register some required parameters for our Corrently CO2 Reading operation
+			/*
 			$this->RegisterPropertyString("Postleitzahl", "69256");
 			$this->RegisterPropertyString("meterId", $meterid);
 			$this->RegisterPropertyString("secret", $secret);
@@ -19,6 +16,7 @@ class CorrentlyAppConnector extends IPSModule {
 			$this->RegisterVariableInteger("co2g_standard", "CO2 (Standard)");
 			$this->RegisterVariableInteger("co2g_oekostrom", "CO2 (Ökostrom)");
 			$this->RegisterVariableString("account", "Kompensations Account");
+			*/
 
 			if(!IPS_GetVariableProfile("Watt-Stunden")) {
 			    IPS_CreateVariableProfile ("Watt-Stunden", 1);
