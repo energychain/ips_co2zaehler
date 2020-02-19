@@ -26,6 +26,7 @@ class CorrentlyAppConnector extends IPSModule {
 			$zip = $this->ReadPropertyString("Postleitzahl");
 			$ac = $this->ReadPropertyString("ac");
 			$wc = $this->ReadPropertyString("wc");
+			$event = 0;
 
 			if($_IPS['SENDER'] == 'Variable') {
 			    $parent = IPS_GetParent($_IPS['VARIABLE']);
