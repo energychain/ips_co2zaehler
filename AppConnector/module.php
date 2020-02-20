@@ -24,8 +24,7 @@ class CorrentlyAppConnector extends IPSModule {
 			}
 		}
 
-		public function update($eid) {
-			echo "EID".$eid;
+		public function update() {
 
 			$zip = $this->ReadPropertyString("Postleitzahl");
 			$ac = $this->ReadPropertyString("ac");
