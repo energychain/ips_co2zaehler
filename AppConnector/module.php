@@ -112,7 +112,7 @@ class CorrentlyAppConnector extends IPSModule {
 			// Minor Usage Treshhold - Wenn weniger als 10Wh Verbraucht werden, macht eine Übermittlung an die App keinen Sinn!
 			if($event > 10) {
 				  if(@IPS_GetVariableIDByName('Zyklusverbrauch',$parent)) {
-						if(GetValue(IPS_GetVariableIDByName('Nennleistung',$parent) > 0) {
+						if(GetValue(IPS_GetVariableIDByName('Nennleistung',$parent)) > 0) {
 							SetValue(IPS_GetVariableIDByName('Zyklusverbrauch',$parent),0);
 						}
 					}
