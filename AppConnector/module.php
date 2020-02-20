@@ -37,14 +37,14 @@ class CorrentlyAppConnector extends IPSModule {
 
 			    if((!$_IPS['VALUE'])&&($_IPS['VALUE']<2)) {
 			        // Behandlung von Switches (beim Ausschalten)
-			        if((@IPS_GetVariableIDByName('Zyklusverbrauch',$parent))&&(GetValueInteger(@IPS_GetVariableIDByName('Zyklusverbrauch',$parent)) > 0)) {
+			        if((@IPS_GetVariableIDByName('Zyklusverbrauch',$parent))&&(GetValueInteger(@IPS_GetVariableIDByName('Zyklusverbrauch',$parent)) > 0)&&(GetValueInteger(@IPS_GetVariableIDByName('Nennleistung',$parent)) == 0)) {
 			            $event_dauer = time() - GetValue(@IPS_GetVariableIDByName('Startzeit',$parent));
 			            $event = GetValueInteger(@IPS_GetVariableIDByName('Zyklusverbrauch',$parent));
 			            SetValue(@IPS_GetVariableIDByName('Betriebszeit',$parent),GetValue(@IPS_GetVariableIDByName('Betriebszeit',$parent)) + $event_dauer);
 			        } else {
 			          if((@IPS_GetVariableIDByName('Betriebszeit',$parent))&&(@IPS_GetVariableIDByName('Nennleistung',$parent))&&(@IPS_GetVariableIDByName('Startzeit',$parent))) {
 			             $event_dauer = time() - GetValue(@IPS_GetVariableIDByName('Startzeit',$parent));
-			             $event = round((GetValue(@IPS_GetVariableIDByName('Nennleistung',$parent))/3600) * $event_dauer);
+			             $event = round((GetValue(@IPS_GetVariableIDByName('Nennleistung',$parent))/3600) * $event_dauer) + GetValue(@IPS_GetVariableIDByName('Zyklusverbrauch',$parent));
 			             SetValue(@IPS_GetVariableIDByName('Betriebszeit',$parent),GetValue(@IPS_GetVariableIDByName('Betriebszeit',$parent)) + $event_dauer);
 			             SetValue(@IPS_GetVariableIDByName('Zyklusverbrauch',$parent), $event);
 			          } else {
@@ -111,6 +111,12 @@ class CorrentlyAppConnector extends IPSModule {
 
 			// Minor Usage Treshhold - Wenn weniger als 10Wh Verbraucht werden, macht eine Übermittlung an die App keinen Sinn!
 			if($event > 10) {
+				  if(@IPS_GetVariableIDByName('Zyklusverbrauch',$parent)) {
+						if(GetValue(IPS_GetVariableIDByName('Nennleistung',$parent) > 0) {
+							SetValue(IPS_GetVariableIDByName('Zyklusverbrauch',$parent),0);
+						}
+					}
+
 			    $postData = array(
 			        'event' => array(
 			            "ac" => $ac,
