@@ -1,5 +1,5 @@
 # STROMDAO-Corrently App Connector
-Ermöglicht eine Übernahme von Schaltvorgängen direkt in die Corrently App zur Kompensation und Erreichen der Klimaziele.
+Ermöglicht eine Übernahme von Schaltvorgängen direkt in die Corrently App ( https://app.corrently.de/ ) zur Kompensation und Erreichen der Klimaziele.
 
 ### Inhaltsverzeichnis
 
@@ -43,11 +43,7 @@ Die Statusvariablen/Kategorien werden automatisch angelegt. Das Löschen einzeln
 
 #### Statusvariablen
 
-Name   | Typ     | Beschreibung
------- | ------- | ------------
-co2g_standard   | integer | Emitierte CO2 Menge im Betrachtungszeitraum in Gramm für einen konventionellen Stromtarif
-co2g_oekostrom   | integer | Emitierte CO2 Menge im Betrachtungszeitraum in Gramm für einen Ökostromtarif (zertifiziert)
-account | string | Stromdao/Corrently Kennung zur Kompensation dieses Zählers
+N/A
 
 #### Profile
 
@@ -61,8 +57,8 @@ N/A
 
 ### 7. PHP-Befehlsreferenze
 
-`void CO2_setReading(integer $InstanzID);`
-Aktualisiert die Kohlendioxid Menge, wird automatisch durch einen Trigger aufgerufen.
+`void corrently_update(integer $InstanzID);`
+Legt einen Verbrauhsevent in der Corrently App an (s.h. Stromplaner)
 
 Beispiel:
-`CO2_setReading(12345);`
+`corrently_update(12345);`
