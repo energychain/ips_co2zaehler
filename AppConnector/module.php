@@ -32,89 +32,61 @@ class CorrentlyAppConnector extends IPSModule {
 			$wc = $this->ReadPropertyString("wc");
 			$event = 0;
 
-			if($_IPS['SENDER'] == 'Variable') {
-			    $parent = IPS_GetParent($SenderID);
-			    $label = IPS_GetName($parent);
+	    $parent = IPS_GetParent($SenderID);
+	    $label = IPS_GetName($parent);
 
-			    if((!$Data[0])&&($Data[0]<2)) {
-			        // Behandlung von Switches (beim Ausschalten)
-			        if((@IPS_GetVariableIDByName('Zyklusverbrauch',$parent))&&(GetValueInteger(@IPS_GetVariableIDByName('Zyklusverbrauch',$parent)) > 0)&&(GetValueInteger(@IPS_GetVariableIDByName('Nennleistung',$parent)) == 0)) {
-			            $event_dauer = time() - GetValue(@IPS_GetVariableIDByName('Startzeit',$parent));
-			            $event = GetValueInteger(@IPS_GetVariableIDByName('Zyklusverbrauch',$parent));
-			            SetValue(@IPS_GetVariableIDByName('Betriebszeit',$parent),GetValue(@IPS_GetVariableIDByName('Betriebszeit',$parent)) + $event_dauer);
-			        } else {
-			          if((@IPS_GetVariableIDByName('Betriebszeit',$parent))&&(@IPS_GetVariableIDByName('Nennleistung',$parent))&&(@IPS_GetVariableIDByName('Startzeit',$parent))) {
-			             $event_dauer = time() - GetValue(@IPS_GetVariableIDByName('Startzeit',$parent));
-			             $event = round((GetValue(@IPS_GetVariableIDByName('Nennleistung',$parent))/3600) * $event_dauer) + GetValue(@IPS_GetVariableIDByName('Zyklusverbrauch',$parent));
-			             SetValue(@IPS_GetVariableIDByName('Betriebszeit',$parent),GetValue(@IPS_GetVariableIDByName('Betriebszeit',$parent)) + $event_dauer);
-			             SetValue(@IPS_GetVariableIDByName('Zyklusverbrauch',$parent), $event);
-			          } else {
-									if(!@IPS_GetVariableIDByName('Startzeit',$parent)) {
-				            $i = IPS_CreateVariable(1);
-				            IPS_SetParent($i,$parent);
-				            IPS_SetName($i,"Startzeit");
-									}
-									if(!@IPS_GetVariableIDByName('Betriebszeit',$parent)) {
-				            $i = IPS_CreateVariable(1);
-				            IPS_SetParent($i,$parent);
-				            IPS_SetName($i,"Betriebszeit");
-									}
-									if(!@IPS_GetVariableIDByName('Nennleistung',$parent)) {
-										$i = IPS_CreateVariable(1);
-										IPS_SetParent($i,$parent);
-										IPS_SetName($i,"Nennleistung");
-										IPS_SetVariableCustomProfile($i,"Watt");
-									}
-			            if(!@IPS_GetVariableIDByName('Zyklusverbrauch',$parent)) {
-				            $i = IPS_CreateVariable(1);
-				            IPS_SetParent($i,$parent);
-				            IPS_SetName($i,"Zyklusverbrauch");
-				            IPS_SetVariableCustomProfile($i,"Watt-Stunden");
-									}
-									if(!@IPS_GetVariableIDByName('Gesamtverbrauch',$parent)) {
-				            $i = IPS_CreateVariable(1);
-				            IPS_SetParent($i,$parent);
-				            IPS_SetName($i,"Gesamtverbrauch");
-				            IPS_SetVariableCustomProfile($i,"Watt-Stunden");
-									}
-			           }
-			          }
-			        } else {
-			            if($Data[0]==1) {
-			                 // Behandlung von Switches zum Zeitpunkt des Einschalten
-			                if(@IPS_GetVariableIDByName('Startzeit',$parent)) {
-			                    SetValue(@IPS_GetVariableIDByName('Startzeit',$parent),time());
-			                    echo "Gestartet";
-			                }
-			                if(@IPS_GetVariableIDByName('Betriebszeit',$parent)) {
-			                    SetValue(@IPS_GetVariableIDByName('Betriebszeit',$parent),0);
-			                }
-			            } else {
-			                if(@IPS_GetVariableIDByName('Letzter Zählerstand',$parent)) {
-			                    // Übermitteln wenn dieser Zählerstand mindestens 50wh größer als letzter Zählerstand
-			                    if(GetValue(@IPS_GetVariableIDByName('Letzter Zählerstand',$parent)) < $_IPS["VALUE"] - 50) {
-			                        $event = $Data[0] - GetValue(@IPS_GetVariableIDByName('Letzter Zählerstand',$parent));
-			                        SetValue(@IPS_GetVariableIDByName('Letzter Zählerstand',$parent),$_IPS["VALUE"]);
-			                    }
-			                } else {
-			                    $i = IPS_CreateVariable(1);
-			                    IPS_SetParent($i,$parent);
-			                    IPS_SetName($i,'Letzter Zählerstand');
-			                    IPS_SetVariableCustomProfile($i,"Watt-Stunden");
-			                    SetValue($i,$Data[0]);
-			                }
-			            }
-			        }
-			        if($event >0) {
-			            SetValue(@IPS_GetVariableIDByName('Gesamtverbrauch',$parent),GetValue(@IPS_GetVariableIDByName('Gesamtverbrauch',$parent)) + $event);
-			        }
-			} // Handling of Variables
+	    if((!$Data[0])&&($Data[0]<2)) {
+	        // Behandlung von Switches (beim Ausschalten)
+	        if((GetValueInteger($this->GetIDForIdent("Zyklusverbrauch_".$parent)) > 0)&&(GetValueInteger($this->GetIDForIdent("Nennleistung_".$parent)) == 0)) {
+							$event_dauer = time() - GetValue($this->GetIDForIdent("Startzeit_".$parent));
+	            $event = GetValueInteger($this->GetIDForIdent("Zyklusverbrauch_".$parent));
+	            SetValue($this->GetIDForIdent("Betriebszeit_".$parent),GetValue($this->GetIDForIdent("Betriebszeit_".$parent)) + $event_dauer);
+	        } else {
+	          if(($this->GetIDForIdent("Betriebszeit_".$parent))&&($this->GetIDForIdent("Nennleistung_".$parent))&&(@IPS_GetVariableIDByName('Startzeit',$parent))) {
+	             $event_dauer = time() - GetValue(@IPS_GetVariableIDByName('Startzeit',$parent));
+	             $event = round((GetValue($this->GetIDForIdent("Nennleistung_".$parent))/3600) * $event_dauer) + GetValue($this->GetIDForIdent("Zyklusverbrauch_".$parent));
+	             SetValue($this->GetIDForIdent("Betriebszeit_".$parent),GetValue($this->GetIDForIdent("Betriebszeit_".$parent)) + $event_dauer);
+	             SetValue($this->GetIDForIdent("Zyklusverbrauch_".$parent), $event);
+	          } else {
+
+	           }
+	          }
+	        } else {
+	            if($Data[0]==1) {
+	                 // Behandlung von Switches zum Zeitpunkt des Einschalten
+	                    SetValue($this->GetIDForIdent("Startzeit_".$parent),time());
+	                    echo "Gestartet";
+	               			SetValue($this->GetIDForIdent("Betriebszeit_".$parent), 0);
+	            } else {
+								/* Removed as of v50 (No Meter Support until Variable Handling change is completed)
+	                if(@IPS_GetVariableIDByName('Letzter Zählerstand',$parent)) {
+	                    // Übermitteln wenn dieser Zählerstand mindestens 50wh größer als letzter Zählerstand
+
+	                    if(GetValue(@IPS_GetVariableIDByName('Letzter Zählerstand',$parent)) < $_IPS["VALUE"] - 50) {
+	                        $event = $Data[0] - GetValue(@IPS_GetVariableIDByName('Letzter Zählerstand',$parent));
+	                        SetValue(@IPS_GetVariableIDByName('Letzter Zählerstand',$parent),$_IPS["VALUE"]);
+	                    }
+
+	                } else {
+	                    $i = IPS_CreateVariable(1);
+	                    IPS_SetParent($i,$parent);
+	                    IPS_SetName($i,'Letzter Zählerstand');
+	                    IPS_SetVariableCustomProfile($i,"Watt-Stunden");
+	                    SetValue($i,$Data[0]);
+	                }
+									*/
+	            }
+	        }
+	        if($event >0) {
+	            SetValue($this->GetIDForIdent("Gesamtverbrauch_".$parent),GetValue($this->GetIDForIdent("Gesamtverbrauch_".$parent)) + $event);
+	        }
+			// Handling of Variables
 
 			// Minor Usage Treshhold - Wenn weniger als 10Wh Verbraucht werden, macht eine Übermittlung an die App keinen Sinn!
 			if($event > 10) {
-				  if(@IPS_GetVariableIDByName('Zyklusverbrauch',$parent)) {
-						if(GetValue(IPS_GetVariableIDByName('Nennleistung',$parent)) > 0) {
-							SetValue(IPS_GetVariableIDByName('Zyklusverbrauch',$parent),0);
+				  if($this->GetIDForIdent("Zyklusverbrauch_".$parent)) {
+						if(GetValue($this->GetIDForIdent("Nennleistung_".$parent)) > 0) {
+							SetValue($this->GetIDForIdent("Zyklusverbrauch_".$parent),0);
 						}
 					}
 
@@ -157,28 +129,16 @@ class CorrentlyAppConnector extends IPSModule {
 			parent::ApplyChanges();
 			if($this->ReadPropertyInteger("meteringvariable")!=0) {
 						$parent = IPS_GetParent($this->ReadPropertyInteger("meteringvariable"));
+						$label = IPS_GetName($parent);
+
+						$this->RegisterVariableInteger("Startzeit_".$parent, $label." Starzeit");
+						$this->RegisterVariableInteger("Gesamtverbrauch_".$parent, $label." Gesamtverbrauch");
+						$this->RegisterVariableInteger("Betriebszeit_".$parent, $label." Betriebszeit");
+
+						SetValue($this->RegisterVariableInteger("Nennleistung_".$parent, $label." Nennleistung","Watt"),$this->ReadPropertyInteger("Nennleistung"));
+						SetValue($this->RegisterVariableInteger("Zyklusverbrauch_".$parent, $label." Zyklusverbrauch","Watt-Stunden"),$this->ReadPropertyInteger("Zyklusverbrauch"));
+
 						$this->RegisterMessage($this->ReadPropertyInteger("meteringvariable"), 10603 /* IM_CHANGESTATUS */);
-
-						if(!@IPS_GetVariableIDByName('Zyklusverbrauch',$parent)) {
-							 $i = IPS_CreateVariable(1);
-							 IPS_SetParent($i,$parent);
-							 IPS_SetName($i,"Zyklusverbrauch");
-							 IPS_SetVariableCustomProfile($i,"Watt-Stunden");
-						}
-						if($this->ReadPropertyInteger("Zyklusverbrauch") > 0) {
-							SetValue(IPS_GetVariableIDByName('Zyklusverbrauch',$parent),$this->ReadPropertyInteger("Zyklusverbrauch"));
-						}
-
-						if(!@IPS_GetVariableIDByName('Nennleistung',$parent)) {
-							 $i = IPS_CreateVariable(1);
-							 IPS_SetParent($i,$parent);
-							 IPS_SetName($i,"Nennleistung");
-							 IPS_SetVariableCustomProfile($i,"Watt-Stunden");
-						}
-						if($this->ReadPropertyInteger("Nennleistung") > 0) {
-							SetValue(IPS_GetVariableIDByName('Nennleistung',$parent),$this->ReadPropertyInteger("Nennleistung"));
-						}
-
 			}
 		}
 }
