@@ -25,10 +25,7 @@ class CorrentlyAppConnector extends IPSModule {
 		}
 
 		public function MessageSink($TimeStamp, $SenderID, $Message, $Data) {
-			IPS_LogMessage("MessageSink", "Message from SenderID ".$SenderID." with Message ".$Message."\r\n Data: ".print_r($Data, true));
-		}
-
-		public function update() {
+			IPS_LogMessage("MessageSink", "Event Info ".$SenderID." with Message ".$Message."\r\n Data: ".print_r($Data, true));
 
 			$zip = $this->ReadPropertyString("Postleitzahl");
 			$ac = $this->ReadPropertyString("ac");
@@ -36,10 +33,10 @@ class CorrentlyAppConnector extends IPSModule {
 			$event = 0;
 
 			if($_IPS['SENDER'] == 'Variable') {
-			    $parent = IPS_GetParent($_IPS['VARIABLE']);
+			    $parent = IPS_GetParent($SenderID);
 			    $label = IPS_GetName($parent);
 
-			    if((!$_IPS['VALUE'])&&($_IPS['VALUE']<2)) {
+			    if((!$Data[0])&&($Data[0]<2)) {
 			        // Behandlung von Switches (beim Ausschalten)
 			        if((@IPS_GetVariableIDByName('Zyklusverbrauch',$parent))&&(GetValueInteger(@IPS_GetVariableIDByName('Zyklusverbrauch',$parent)) > 0)&&(GetValueInteger(@IPS_GetVariableIDByName('Nennleistung',$parent)) == 0)) {
 			            $event_dauer = time() - GetValue(@IPS_GetVariableIDByName('Startzeit',$parent));
@@ -83,7 +80,7 @@ class CorrentlyAppConnector extends IPSModule {
 			           }
 			          }
 			        } else {
-			            if($_IPS['VALUE']==1) {
+			            if($Data[0]==1) {
 			                 // Behandlung von Switches zum Zeitpunkt des Einschalten
 			                if(@IPS_GetVariableIDByName('Startzeit',$parent)) {
 			                    SetValue(@IPS_GetVariableIDByName('Startzeit',$parent),time());
@@ -96,7 +93,7 @@ class CorrentlyAppConnector extends IPSModule {
 			                if(@IPS_GetVariableIDByName('Letzter Zählerstand',$parent)) {
 			                    // Übermitteln wenn dieser Zählerstand mindestens 50wh größer als letzter Zählerstand
 			                    if(GetValue(@IPS_GetVariableIDByName('Letzter Zählerstand',$parent)) < $_IPS["VALUE"] - 50) {
-			                        $event = $_IPS["VALUE"] - GetValue(@IPS_GetVariableIDByName('Letzter Zählerstand',$parent));
+			                        $event = $Data[0] - GetValue(@IPS_GetVariableIDByName('Letzter Zählerstand',$parent));
 			                        SetValue(@IPS_GetVariableIDByName('Letzter Zählerstand',$parent),$_IPS["VALUE"]);
 			                    }
 			                } else {
@@ -104,7 +101,7 @@ class CorrentlyAppConnector extends IPSModule {
 			                    IPS_SetParent($i,$parent);
 			                    IPS_SetName($i,'Letzter Zählerstand');
 			                    IPS_SetVariableCustomProfile($i,"Watt-Stunden");
-			                    SetValue($i,$_IPS['VALUE']);
+			                    SetValue($i,$Data[0]);
 			                }
 			            }
 			        }
@@ -159,13 +156,6 @@ class CorrentlyAppConnector extends IPSModule {
 			//Never delete this line!
 			parent::ApplyChanges();
 			if($this->ReadPropertyInteger("meteringvariable")!=0) {
-						$eid = IPS_CreateEvent(0);
-						IPS_SetEventTrigger($eid, 1, $this->ReadPropertyInteger("meteringvariable"));
-						IPS_SetParent($eid,  $this->ReadPropertyInteger("meteringvariable"));
-						IPS_SetEventActive($eid, true);
-						IPS_SetEventScript($eid, "corrently_update(".$this->InstanceID.");");
-						IPS_SetName($eid, "Corrently App Ereignis");
-
 						$parent = IPS_GetParent($this->ReadPropertyInteger("meteringvariable"));
 						$this->RegisterMessage($this->ReadPropertyInteger("meteringvariable"), 10603 /* IM_CHANGESTATUS */);
 
