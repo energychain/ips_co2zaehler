@@ -167,7 +167,7 @@ class CorrentlyAppConnector extends IPSModule {
 							 IPS_SetVariableCustomProfile($i,"Watt-Stunden");
 						}
 						if($this->ReadPropertyInteger("Zyklusverbrauch") > 0) {
-							SetValue(IPS_GetVariableIDByName('Zyklusverbrauch',$parent),$this->ReadPropertyInteger("Zyklusverbrauch"))
+							SetValue(IPS_GetVariableIDByName('Zyklusverbrauch',$parent),$this->ReadPropertyInteger("Zyklusverbrauch"));
 						}
 
 						if(!@IPS_GetVariableIDByName('Nennleistung',$parent)) {
@@ -177,7 +177,7 @@ class CorrentlyAppConnector extends IPSModule {
 							 IPS_SetVariableCustomProfile($i,"Watt-Stunden");
 						}
 						if($this->ReadPropertyInteger("Nennleistung") > 0) {
-							SetValue(IPS_GetVariableIDByName('Nennleistung',$parent),$this->ReadPropertyInteger("Nennleistung"))
+							SetValue(IPS_GetVariableIDByName('Nennleistung',$parent),$this->ReadPropertyInteger("Nennleistung"));
 						}
 
 			}
