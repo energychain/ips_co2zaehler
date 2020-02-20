@@ -25,8 +25,6 @@ class CorrentlyAppConnector extends IPSModule {
 		}
 
 		public function MessageSink($TimeStamp, $SenderID, $Message, $Data) {
-			IPS_LogMessage("MessageSink", "Event Info ".$SenderID." with Message ".$Message."\r\n Data: ".print_r($Data, true));
-
 			$zip = $this->ReadPropertyString("Postleitzahl");
 			$ac = $this->ReadPropertyString("ac");
 			$wc = $this->ReadPropertyString("wc");
@@ -55,7 +53,7 @@ class CorrentlyAppConnector extends IPSModule {
 	            if($Data[0]==1) {
 	                 // Behandlung von Switches zum Zeitpunkt des Einschalten
 	                    SetValue($this->GetIDForIdent("Startzeit_".$parent),time());
-	                    echo "Gestartet";
+
 	               			SetValue($this->GetIDForIdent("Betriebszeit_".$parent), 0);
 	            } else {
 								/* Removed as of v50 (No Meter Support until Variable Handling change is completed)
@@ -112,7 +110,7 @@ class CorrentlyAppConnector extends IPSModule {
 			    $response = curl_exec($ch);
 
 			    $responseData = json_decode($response, TRUE);
-					print_r($responseData);
+					IPS_LogMessage("MessageSink", "Event Info ".$SenderID." with Message ".$Message."\r\n Data: ".print_r($responseData, true));
 			}
 		}
 
