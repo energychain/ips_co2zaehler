@@ -24,6 +24,10 @@ class CorrentlyAppConnector extends IPSModule {
 			}
 		}
 
+		public function MessageSink($TimeStamp, $SenderID, $Message, $Data) {
+			IPS_LogMessage("MessageSink", "Message from SenderID ".$SenderID." with Message ".$Message."\r\n Data: ".print_r($Data, true));
+		}
+
 		public function update() {
 
 			$zip = $this->ReadPropertyString("Postleitzahl");
@@ -163,6 +167,7 @@ class CorrentlyAppConnector extends IPSModule {
 						IPS_SetName($eid, "Corrently App Ereignis");
 
 						$parent = IPS_GetParent($this->ReadPropertyInteger("meteringvariable"));
+						$this->RegisterMessage($this->ReadPropertyInteger("meteringvariable"), 10603 /* IM_CHANGESTATUS */);
 
 						if(!@IPS_GetVariableIDByName('Zyklusverbrauch',$parent)) {
 							 $i = IPS_CreateVariable(1);
